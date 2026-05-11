@@ -39,25 +39,33 @@ USA_STATES = [
 
     "Alabama", "Alaska", "Arizona",
     "Arkansas", "California", "Colorado",
+
     "Connecticut", "Delaware", "Florida",
     "Georgia", "Hawaii", "Idaho",
+
     "Illinois", "Indiana", "Iowa",
     "Kansas", "Kentucky", "Louisiana",
+
     "Maine", "Maryland", "Massachusetts",
     "Michigan", "Minnesota", "Mississippi",
+
     "Missouri", "Montana", "Nebraska",
     "Nevada", "New Hampshire", "New Jersey",
+
     "New Mexico", "New York", "North Carolina",
     "North Dakota", "Ohio", "Oklahoma",
+
     "Oregon", "Pennsylvania", "Rhode Island",
     "South Carolina", "South Dakota", "Tennessee",
+
     "Texas", "Utah", "Vermont",
     "Virginia", "Washington", "West Virginia",
+
     "Wisconsin", "Wyoming"
 ]
 
 # ==========================================
-# CIUDADES REALES
+# DATOS REALES
 # ==========================================
 
 STATE_DATA = {
@@ -106,12 +114,13 @@ EMAIL_DOMAINS = [
 ]
 
 # ==========================================
-# GENERAR TELEFONO USA
+# GENERAR TELEFONO
 # ==========================================
 
 def generate_phone(area_code):
 
     second = random.randint(200, 999)
+
     third = random.randint(1000, 9999)
 
     return f"+1 ({area_code}) {second}-{third}"
@@ -152,20 +161,27 @@ def generate_address(state):
         data = STATE_DATA[state]
 
         city = data["city"]
+
         zip_code = data["zip"]
+
         area_code = data["area"]
 
     else:
 
         city = fake.city()
+
         zip_code = fake.zipcode()
+
         area_code = random.choice([
-            "205", "907", "480", "501",
-            "302", "208", "515", "620",
-            "270", "225", "207", "410"
+
+            "205", "907", "480",
+            "501", "302", "208",
+            "515", "620", "270",
+            "225", "207", "410"
         ])
 
     first = fake.first_name()
+
     last = fake.last_name()
 
     full_name = f"{first} {last}"
@@ -252,17 +268,23 @@ async def usa_states(update: Update, context: ContextTypes.DEFAULT_TYPE):
     for state in USA_STATES:
 
         row.append(
+
             InlineKeyboardButton(
                 state,
                 callback_data=f"state_{state}"
             )
         )
 
+        # 👇 3 BOTONES POR FILA
+
         if len(row) == 3:
+
             keyboard.append(row)
+
             row = []
 
     if row:
+
         keyboard.append(row)
 
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -301,8 +323,10 @@ async def generate(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await query.message.reply_text(
-        text,
+    # 👇 ACTUALIZA EL MISMO MENSAJE
+
+    await query.edit_message_text(
+        text=text,
         parse_mode="HTML",
         reply_markup=reply_markup
     )
