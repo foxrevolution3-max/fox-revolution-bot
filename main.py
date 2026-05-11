@@ -16,203 +16,163 @@ from telegram.ext import (
     ContextTypes,
 )
 
-# =====================================
+# ==========================================
 # TOKEN
-# =====================================
+# ==========================================
 
 TOKEN = "8702989629:AAGHgafvmYRUA_hfI-jrSWYdZ0uFcIALdQc"
 
-# =====================================
+# ==========================================
 # LOGS
-# =====================================
+# ==========================================
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO
 )
 
-# =====================================
-# FAKER
-# =====================================
-
-fake = Faker("en_US")
-
-# =====================================
+# ==========================================
 # ESTADOS USA
-# =====================================
+# ==========================================
 
-USA_STATES = {
+USA_STATES = [
 
-    "California": [
-        ("Los Angeles", "90001"),
-        ("San Diego", "92101"),
-        ("San Francisco", "94101"),
-    ],
+    "Alabama", "Alaska", "Arizona",
+    "Arkansas", "California", "Colorado",
+    "Connecticut", "Delaware", "Florida",
+    "Georgia", "Hawaii", "Idaho",
+    "Illinois", "Indiana", "Iowa",
+    "Kansas", "Kentucky", "Louisiana",
+    "Maine", "Maryland", "Massachusetts",
+    "Michigan", "Minnesota", "Mississippi",
+    "Missouri", "Montana", "Nebraska",
+    "Nevada", "New Hampshire", "New Jersey",
+    "New Mexico", "New York", "North Carolina",
+    "North Dakota", "Ohio", "Oklahoma",
+    "Oregon", "Pennsylvania", "Rhode Island",
+    "South Carolina", "South Dakota", "Tennessee",
+    "Texas", "Utah", "Vermont",
+    "Virginia", "Washington", "West Virginia",
+    "Wisconsin", "Wyoming"
+]
 
-    "Texas": [
-        ("Houston", "77001"),
-        ("Dallas", "75201"),
-        ("Austin", "73301"),
-    ],
+# ==========================================
+# CIUDADES REALES
+# ==========================================
 
-    "Florida": [
-        ("Miami", "33101"),
-        ("Orlando", "32801"),
-        ("Tampa", "33601"),
-    ],
+STATE_DATA = {
 
-    "New York": [
-        ("New York City", "10001"),
-        ("Buffalo", "14201"),
-        ("Albany", "12201"),
-    ],
+    "California": {
+        "city": "Los Angeles",
+        "zip": "90001",
+        "area": "213"
+    },
 
-    "Illinois": [
-        ("Chicago", "60601"),
-        ("Aurora", "60502"),
-        ("Naperville", "60540"),
-    ],
+    "Texas": {
+        "city": "Houston",
+        "zip": "77001",
+        "area": "281"
+    },
 
-    "Arizona": [
-        ("Phoenix", "85001"),
-        ("Tucson", "85701"),
-        ("Mesa", "85201"),
-    ],
+    "Florida": {
+        "city": "Miami",
+        "zip": "33101",
+        "area": "305"
+    },
 
-    "Nevada": [
-        ("Las Vegas", "88901"),
-        ("Reno", "89501"),
-        ("Henderson", "89002"),
-    ],
+    "New York": {
+        "city": "Buffalo",
+        "zip": "14201",
+        "area": "716"
+    },
 
-    "Georgia": [
-        ("Atlanta", "30301"),
-        ("Savannah", "31401"),
-        ("Augusta", "30901"),
-    ],
-
-    "Washington": [
-        ("Seattle", "98101"),
-        ("Tacoma", "98401"),
-        ("Spokane", "99201"),
-    ],
-
-    "Colorado": [
-        ("Denver", "80201"),
-        ("Aurora", "80010"),
-        ("Boulder", "80301"),
-    ],
-
-    "Ohio": [
-        ("Columbus", "43004"),
-        ("Cleveland", "44101"),
-        ("Cincinnati", "45201"),
-    ],
-
-    "North Carolina": [
-        ("Charlotte", "28201"),
-        ("Raleigh", "27601"),
-        ("Durham", "27701"),
-    ],
-
-    "Virginia": [
-        ("Virginia Beach", "23450"),
-        ("Richmond", "23173"),
-        ("Norfolk", "23501"),
-    ],
-
-    "Pennsylvania": [
-        ("Philadelphia", "19019"),
-        ("Pittsburgh", "15201"),
-        ("Allentown", "18101"),
-    ],
-
-    "Michigan": [
-        ("Detroit", "48201"),
-        ("Grand Rapids", "49501"),
-        ("Lansing", "48901"),
-    ],
-
-    "New Jersey": [
-        ("Newark", "07101"),
-        ("Jersey City", "07302"),
-        ("Paterson", "07501"),
-    ],
-
-    "Massachusetts": [
-        ("Boston", "02108"),
-        ("Cambridge", "02138"),
-        ("Salem", "01970"),
-    ],
-
-    "Tennessee": [
-        ("Nashville", "37201"),
-        ("Memphis", "37501"),
-        ("Knoxville", "37901"),
-    ],
-
-    "Indiana": [
-        ("Indianapolis", "46201"),
-        ("Fort Wayne", "46801"),
-        ("Evansville", "47701"),
-    ],
-
-    "Missouri": [
-        ("Kansas City", "64101"),
-        ("St. Louis", "63101"),
-        ("Springfield", "65801"),
-    ],
+    "Illinois": {
+        "city": "Chicago",
+        "zip": "60601",
+        "area": "312"
+    },
 }
 
-# =====================================
+# ==========================================
 # EMAILS
-# =====================================
+# ==========================================
 
 EMAIL_DOMAINS = [
+
     "gmail.com",
     "hotmail.com",
     "outlook.com",
-    "yahoo.com",
+    "yahoo.com"
 ]
 
-# =====================================
+# ==========================================
+# GENERAR TELEFONO USA
+# ==========================================
+
+def generate_phone(area_code):
+
+    second = random.randint(200, 999)
+    third = random.randint(1000, 9999)
+
+    return f"+1 ({area_code}) {second}-{third}"
+
+# ==========================================
 # GENERAR EMAIL
-# =====================================
+# ==========================================
 
 def generate_email(first, last):
 
     number = random.randint(10, 999)
 
     username = random.choice([
-        f"{first}{last}",
-        f"{first}.{last}",
-        f"{first}_{last}",
+
+        f"{first}.{last}{number}",
         f"{first}{number}",
         f"{last}{number}",
-    ]).lower()
+        f"{first}_{last}",
+        f"{first}{last}",
+    ])
+
+    username = username.lower()
 
     domain = random.choice(EMAIL_DOMAINS)
 
     return f"{username}@{domain}"
 
-# =====================================
+# ==========================================
 # GENERAR DIRECCION
-# =====================================
+# ==========================================
 
 def generate_address(state):
 
-    city, postal = random.choice(
-        USA_STATES[state]
-    )
+    fake = Faker("en_US")
+
+    if state in STATE_DATA:
+
+        data = STATE_DATA[state]
+
+        city = data["city"]
+        zip_code = data["zip"]
+        area_code = data["area"]
+
+    else:
+
+        city = fake.city()
+        zip_code = fake.zipcode()
+        area_code = random.choice([
+            "205", "907", "480", "501",
+            "302", "208", "515", "620",
+            "270", "225", "207", "410"
+        ])
 
     first = fake.first_name()
     last = fake.last_name()
 
-    fullname = f"{first} {last}"
+    full_name = f"{first} {last}"
 
     street = fake.street_address()
 
-    phone = fake.phone_number()
+    phone = generate_phone(area_code)
 
     email = generate_email(first, last)
 
@@ -221,38 +181,39 @@ def generate_address(state):
 
 🇺🇸 USA
 
-👤 <b>Name:</b>
-<code>{fullname}</code>
+👤 <b>Nombre:</b>
+<code>{full_name}</code>
 
-🏠 <b>Address:</b>
+🏠 <b>Dirección:</b>
 <code>{street}</code>
 
-🏙 <b>City:</b>
+🏙 <b>Ciudad:</b>
 <code>{city}</code>
 
-🗺 <b>State:</b>
+🗺 <b>Estado:</b>
 <code>{state}</code>
 
-📮 <b>ZIP Code:</b>
-<code>{postal}</code>
+📮 <b>Código Postal:</b>
+<code>{zip_code}</code>
 
-📞 <b>Phone:</b>
+📞 <b>Teléfono:</b>
 <code>{phone}</code>
 
-📧 <b>Email:</b>
+📧 <b>Correo:</b>
 <code>{email}</code>
 """
 
-# =====================================
+# ==========================================
 # START
-# =====================================
+# ==========================================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
+
         [
             InlineKeyboardButton(
-                "🇺🇸 United States",
+                "🇺🇸 Estados Unidos",
                 callback_data="usa"
             )
         ]
@@ -263,9 +224,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = """
 🦊 <b>FOX REVOLUTION BOT</b>
 
-🌍 USA Address Generator
+🌍 Generador de Direcciones USA
 
-Select country:
+Selecciona un país:
 """
 
     await update.message.reply_text(
@@ -274,66 +235,66 @@ Select country:
         reply_markup=reply_markup
     )
 
-# =====================================
-# BOTONES
-# =====================================
+# ==========================================
+# MOSTRAR ESTADOS
+# ==========================================
 
-async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def usa_states(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
 
     await query.answer()
 
-    data = query.data
+    keyboard = []
 
-    # MOSTRAR ESTADOS
-    if data == "usa":
+    row = []
 
-        keyboard = []
+    for state in USA_STATES:
 
-        row = []
-
-        for i, state in enumerate(
-            USA_STATES.keys(),
-            start=1
-        ):
-
-            row.append(
-                InlineKeyboardButton(
-                    state,
-                    callback_data=state
-                )
+        row.append(
+            InlineKeyboardButton(
+                state,
+                callback_data=f"state_{state}"
             )
-
-            # 🔥 3 BOTONES POR FILA
-            if len(row) == 3:
-
-                keyboard.append(row)
-
-                row = []
-
-        if row:
-            keyboard.append(row)
-
-        reply_markup = InlineKeyboardMarkup(keyboard)
-
-        await query.message.reply_text(
-            "🇺🇸 Select a state:",
-            reply_markup=reply_markup
         )
 
-        return
+        if len(row) == 3:
+            keyboard.append(row)
+            row = []
 
-    # GENERAR DIRECCION
-    state = data
+    if row:
+        keyboard.append(row)
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await query.message.reply_text(
+        "🇺🇸 Selecciona un estado:",
+        reply_markup=reply_markup
+    )
+
+# ==========================================
+# GENERAR
+# ==========================================
+
+async def generate(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    query = update.callback_query
+
+    await query.answer()
+
+    state = query.data.replace(
+        "state_",
+        ""
+    )
 
     text = generate_address(state)
 
     keyboard = [
+
         [
             InlineKeyboardButton(
-                "🔄 Generate New",
-                callback_data=state
+                "🔄 Generar Nuevo",
+                callback_data=f"state_{state}"
             )
         ]
     ]
@@ -346,23 +307,43 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=reply_markup
     )
 
-# =====================================
+# ==========================================
+# BOTONES
+# ==========================================
+
+async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    query = update.callback_query
+
+    data = query.data
+
+    if data == "usa":
+
+        await usa_states(update, context)
+
+    elif data.startswith("state_"):
+
+        await generate(update, context)
+
+# ==========================================
 # HELP
-# =====================================
+# ==========================================
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     text = """
-🦊 <b>FOX REVOLUTION BOT</b>
+❓ <b>AYUDA</b>
 
-Use /start to begin.
+Usa /start para comenzar.
 
-✅ Real USA states
-✅ Real cities
-✅ Real ZIP codes
-✅ Realistic emails
-✅ Random phones
-✅ Premium generator
+✅ Estados reales USA
+✅ Ciudades reales
+✅ ZIP Codes reales
+✅ Códigos telefónicos reales
+✅ Correos realistas
+✅ Generador premium
+
+⚡ Powered By Fox Revolution
 """
 
     await update.message.reply_text(
@@ -370,9 +351,9 @@ Use /start to begin.
         parse_mode="HTML"
     )
 
-# =====================================
+# ==========================================
 # MAIN
-# =====================================
+# ==========================================
 
 def main():
 
@@ -390,13 +371,13 @@ def main():
         CallbackQueryHandler(button)
     )
 
-    print("🦊 FOX REVOLUTION BOT STARTED")
+    print("🦊 FOX REVOLUTION BOT INICIADO")
 
     app.run_polling()
 
-# =====================================
+# ==========================================
 # RUN
-# =====================================
+# ==========================================
 
 if __name__ == "__main__":
     main()
