@@ -37,31 +37,16 @@ logging.basicConfig(
 
 USA_STATES = [
 
-    "Alabama", "Alaska", "Arizona",
-    "Arkansas", "California", "Colorado",
-
-    "Connecticut", "Delaware", "Florida",
-    "Georgia", "Hawaii", "Idaho",
-
-    "Illinois", "Indiana", "Iowa",
-    "Kansas", "Kentucky", "Louisiana",
-
-    "Maine", "Maryland", "Massachusetts",
-    "Michigan", "Minnesota", "Mississippi",
-
-    "Missouri", "Montana", "Nebraska",
-    "Nevada", "New Hampshire", "New Jersey",
-
-    "New Mexico", "New York", "North Carolina",
-    "North Dakota", "Ohio", "Oklahoma",
-
-    "Oregon", "Pennsylvania", "Rhode Island",
-    "South Carolina", "South Dakota", "Tennessee",
-
-    "Texas", "Utah", "Vermont",
-    "Virginia", "Washington", "West Virginia",
-
-    "Wisconsin", "Wyoming"
+    "California",
+    "Texas",
+    "Florida",
+    "New York",
+    "Illinois",
+    "New Jersey",
+    "Nevada",
+    "Arizona",
+    "Georgia",
+    "Washington",
 ]
 
 # ==========================================
@@ -70,35 +55,191 @@ USA_STATES = [
 
 STATE_DATA = {
 
-    "California": {
-        "city": "Los Angeles",
-        "zip": "90001",
-        "area": "213"
-    },
+    "California": [
 
-    "Texas": {
-        "city": "Houston",
-        "zip": "77001",
-        "area": "281"
-    },
+        {
+            "city": "Los Angeles",
+            "zip": "90001",
+            "area": "213"
+        },
 
-    "Florida": {
-        "city": "Miami",
-        "zip": "33101",
-        "area": "305"
-    },
+        {
+            "city": "San Diego",
+            "zip": "92101",
+            "area": "619"
+        },
 
-    "New York": {
-        "city": "Buffalo",
-        "zip": "14201",
-        "area": "716"
-    },
+        {
+            "city": "San Francisco",
+            "zip": "94102",
+            "area": "415"
+        },
+    ],
 
-    "Illinois": {
-        "city": "Chicago",
-        "zip": "60601",
-        "area": "312"
-    },
+    "Texas": [
+
+        {
+            "city": "Houston",
+            "zip": "77001",
+            "area": "281"
+        },
+
+        {
+            "city": "Dallas",
+            "zip": "75201",
+            "area": "214"
+        },
+
+        {
+            "city": "Austin",
+            "zip": "73301",
+            "area": "512"
+        },
+    ],
+
+    "Florida": [
+
+        {
+            "city": "Miami",
+            "zip": "33101",
+            "area": "305"
+        },
+
+        {
+            "city": "Orlando",
+            "zip": "32801",
+            "area": "407"
+        },
+
+        {
+            "city": "Tampa",
+            "zip": "33601",
+            "area": "813"
+        },
+    ],
+
+    "New York": [
+
+        {
+            "city": "Buffalo",
+            "zip": "14201",
+            "area": "716"
+        },
+
+        {
+            "city": "New York City",
+            "zip": "10001",
+            "area": "212"
+        },
+
+        {
+            "city": "Rochester",
+            "zip": "14602",
+            "area": "585"
+        },
+    ],
+
+    "Illinois": [
+
+        {
+            "city": "Chicago",
+            "zip": "60601",
+            "area": "312"
+        },
+
+        {
+            "city": "Aurora",
+            "zip": "60502",
+            "area": "630"
+        },
+
+        {
+            "city": "Naperville",
+            "zip": "60540",
+            "area": "331"
+        },
+    ],
+
+    "New Jersey": [
+
+        {
+            "city": "Newark",
+            "zip": "07102",
+            "area": "973"
+        },
+
+        {
+            "city": "Jersey City",
+            "zip": "07302",
+            "area": "201"
+        },
+
+        {
+            "city": "Paterson",
+            "zip": "07501",
+            "area": "862"
+        },
+    ],
+
+    "Nevada": [
+
+        {
+            "city": "Las Vegas",
+            "zip": "88901",
+            "area": "702"
+        },
+
+        {
+            "city": "Reno",
+            "zip": "89501",
+            "area": "775"
+        },
+    ],
+
+    "Arizona": [
+
+        {
+            "city": "Phoenix",
+            "zip": "85001",
+            "area": "602"
+        },
+
+        {
+            "city": "Tucson",
+            "zip": "85701",
+            "area": "520"
+        },
+    ],
+
+    "Georgia": [
+
+        {
+            "city": "Atlanta",
+            "zip": "30301",
+            "area": "404"
+        },
+
+        {
+            "city": "Savannah",
+            "zip": "31401",
+            "area": "912"
+        },
+    ],
+
+    "Washington": [
+
+        {
+            "city": "Seattle",
+            "zip": "98101",
+            "area": "206"
+        },
+
+        {
+            "city": "Spokane",
+            "zip": "99201",
+            "area": "509"
+        },
+    ],
 }
 
 # ==========================================
@@ -119,11 +260,11 @@ EMAIL_DOMAINS = [
 
 def generate_phone(area_code):
 
-    second = random.randint(200, 999)
+    middle = random.randint(200, 999)
 
-    third = random.randint(1000, 9999)
+    last = random.randint(1000, 9999)
 
-    return f"+1 ({area_code}) {second}-{third}"
+    return f"+1 ({area_code}) {middle}-{last}"
 
 # ==========================================
 # GENERAR EMAIL
@@ -156,29 +297,15 @@ def generate_address(state):
 
     fake = Faker("en_US")
 
-    if state in STATE_DATA:
+    location = random.choice(
+        STATE_DATA[state]
+    )
 
-        data = STATE_DATA[state]
+    city = location["city"]
 
-        city = data["city"]
+    zip_code = location["zip"]
 
-        zip_code = data["zip"]
-
-        area_code = data["area"]
-
-    else:
-
-        city = fake.city()
-
-        zip_code = fake.zipcode()
-
-        area_code = random.choice([
-
-            "205", "907", "480",
-            "501", "302", "208",
-            "515", "620", "270",
-            "225", "207", "410"
-        ])
+    area_code = location["area"]
 
     first = fake.first_name()
 
@@ -240,7 +367,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = """
 🦊 <b>FOX REVOLUTION BOT</b>
 
-🌍 Generador de Direcciones USA
+🌍 Generador Premium USA
 
 Selecciona un país:
 """
@@ -274,8 +401,6 @@ async def usa_states(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 callback_data=f"state_{state}"
             )
         )
-
-        # 👇 3 BOTONES POR FILA
 
         if len(row) == 3:
 
@@ -322,8 +447,6 @@ async def generate(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
-
-    # 👇 ACTUALIZA EL MISMO MENSAJE
 
     await query.edit_message_text(
         text=text,
