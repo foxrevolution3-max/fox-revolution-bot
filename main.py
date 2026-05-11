@@ -1,339 +1,426 @@
+import logging
+import random
+
 from faker import Faker
+
 from telegram import (
     Update,
     InlineKeyboardButton,
-    InlineKeyboardMarkup
+    InlineKeyboardMarkup,
 )
+
 from telegram.ext import (
     Application,
     CommandHandler,
     CallbackQueryHandler,
-    ContextTypes
+    ContextTypes,
 )
 
+# =========================
 # TOKEN
-TOKEN = "8702989629:AAGHgafvmYRUA_hfI-jrSWYdZ0uFcIALdQc"
+# =========================
 
-# PAÍSES COMPATIBLES
+TOKEN = "TU_TOKEN_AQUI"
+
+# =========================
+# LOGS
+# =========================
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO
+)
+
+# =========================
+# PAISES + LOCALES
+# =========================
+
 COUNTRIES = {
 
-    "us": "🇺🇸 Estados Unidos",
-    "ca": "🇨🇦 Canadá",
-    "mx": "🇲🇽 México",
-    "es": "🇪🇸 España",
-    "ar": "🇦🇷 Argentina",
-    "co": "🇨🇴 Colombia",
-    "cl": "🇨🇱 Chile",
-    "pe": "🇵🇪 Perú",
-    "br": "🇧🇷 Brasil",
-
-    "fr": "🇫🇷 Francia",
-    "de": "🇩🇪 Alemania",
-    "it": "🇮🇹 Italia",
-    "gb": "🇬🇧 Reino Unido",
-    "nl": "🇳🇱 Países Bajos",
-    "be": "🇧🇪 Bélgica",
-    "pl": "🇵🇱 Polonia",
-    "ru": "🇷🇺 Rusia",
-    "tr": "🇹🇷 Turquía",
-
-    "jp": "🇯🇵 Japón",
-    "kr": "🇰🇷 Corea del Sur",
-    "cn": "🇨🇳 China",
-    "in": "🇮🇳 India",
-    "th": "🇹🇭 Tailandia",
-    "id": "🇮🇩 Indonesia",
-
-    "sa": "🇸🇦 Arabia Saudita",
-    "ae": "🇦🇪 Emiratos Árabes",
-
-    "za": "🇿🇦 Sudáfrica",
-    "ng": "🇳🇬 Nigeria",
-
-    "au": "🇦🇺 Australia",
-    "nz": "🇳🇿 Nueva Zelanda"
+    "🇺🇸 USA": "en_US",
+    "🇲🇽 México": "es_MX",
+    "🇦🇷 Argentina": "es_AR",
+    "🇧🇷 Brasil": "pt_BR",
+    "🇨🇦 Canadá": "en_CA",
+    "🇪🇸 España": "es_ES",
 }
 
-# LOCALES
-LOCALES = {
+# =========================
+# CIUDADES REALES
+# =========================
 
-    "us": "en_US",
-    "ca": "en_CA",
-    "mx": "es_MX",
-    "es": "es_ES",
-    "ar": "es_AR",
-    "co": "es_CO",
-    "cl": "es_CL",
-    "pe": "es_PE",
-    "br": "pt_BR",
+REAL_LOCATIONS = {
 
-    "fr": "fr_FR",
-    "de": "de_DE",
-    "it": "it_IT",
-    "gb": "en_GB",
-    "nl": "nl_NL",
-    "be": "fr_BE",
-    "pl": "pl_PL",
-    "ru": "ru_RU",
-    "tr": "tr_TR",
+    "🇺🇸 USA": [
 
-    "jp": "ja_JP",
-    "kr": "ko_KR",
-    "cn": "zh_CN",
-    "in": "en_IN",
-    "th": "th_TH",
-    "id": "id_ID",
+        {
+            "city": "New York",
+            "state": "New York",
+            "postal": "10001"
+        },
 
-    "sa": "ar_SA",
-    "ae": "ar_AE",
+        {
+            "city": "Los Angeles",
+            "state": "California",
+            "postal": "90001"
+        },
 
-    "za": "en_ZA",
-    "ng": "en_NG",
+        {
+            "city": "Chicago",
+            "state": "Illinois",
+            "postal": "60601"
+        },
+    ],
 
-    "au": "en_AU",
-    "nz": "en_NZ"
+    "🇲🇽 México": [
+
+        {
+            "city": "Ciudad de México",
+            "state": "CDMX",
+            "postal": "01000"
+        },
+
+        {
+            "city": "Guadalajara",
+            "state": "Jalisco",
+            "postal": "44100"
+        },
+
+        {
+            "city": "Monterrey",
+            "state": "Nuevo León",
+            "postal": "64000"
+        },
+    ],
+
+    "🇦🇷 Argentina": [
+
+        {
+            "city": "Buenos Aires",
+            "state": "Buenos Aires",
+            "postal": "1000"
+        },
+
+        {
+            "city": "Córdoba",
+            "state": "Córdoba",
+            "postal": "5000"
+        },
+
+        {
+            "city": "Rosario",
+            "state": "Santa Fe",
+            "postal": "2000"
+        },
+    ],
+
+    "🇧🇷 Brasil": [
+
+        {
+            "city": "São Paulo",
+            "state": "São Paulo",
+            "postal": "01000-000"
+        },
+
+        {
+            "city": "Rio de Janeiro",
+            "state": "Rio de Janeiro",
+            "postal": "20000-000"
+        },
+
+        {
+            "city": "Brasília",
+            "state": "Distrito Federal",
+            "postal": "70000-000"
+        },
+    ],
+
+    "🇨🇦 Canadá": [
+
+        {
+            "city": "Toronto",
+            "state": "Ontario",
+            "postal": "M5V 3L9"
+        },
+
+        {
+            "city": "Vancouver",
+            "state": "British Columbia",
+            "postal": "V5K 0A1"
+        },
+
+        {
+            "city": "Montreal",
+            "state": "Quebec",
+            "postal": "H1A 0A1"
+        },
+    ],
+
+    "🇪🇸 España": [
+
+        {
+            "city": "Madrid",
+            "state": "Madrid",
+            "postal": "28001"
+        },
+
+        {
+            "city": "Barcelona",
+            "state": "Cataluña",
+            "postal": "08001"
+        },
+
+        {
+            "city": "Valencia",
+            "state": "Valencia",
+            "postal": "46001"
+        },
+    ]
 }
 
-# CÓDIGOS TELEFÓNICOS
-PHONE_CODES = {
+# =========================
+# DOMINIOS EMAIL
+# =========================
 
-    "en_US": "+1",
-    "en_CA": "+1",
-    "es_MX": "+52",
-    "es_ES": "+34",
-    "es_AR": "+54",
-    "es_CO": "+57",
-    "es_CL": "+56",
-    "es_PE": "+51",
-    "pt_BR": "+55",
+EMAIL_DOMAINS = [
 
-    "fr_FR": "+33",
-    "de_DE": "+49",
-    "it_IT": "+39",
-    "en_GB": "+44",
-    "nl_NL": "+31",
-    "fr_BE": "+32",
-    "pl_PL": "+48",
-    "ru_RU": "+7",
-    "tr_TR": "+90",
+    "gmail.com",
+    "hotmail.com",
+    "outlook.com",
+    "yahoo.com",
+]
 
-    "ja_JP": "+81",
-    "ko_KR": "+82",
-    "zh_CN": "+86",
-    "en_IN": "+91",
-    "th_TH": "+66",
-    "id_ID": "+62",
+# =========================
+# GENERAR EMAIL
+# =========================
 
-    "ar_SA": "+966",
-    "ar_AE": "+971",
+def generate_email(first, last):
 
-    "en_ZA": "+27",
-    "en_NG": "+234",
+    number = random.randint(10, 999)
 
-    "en_AU": "+61",
-    "en_NZ": "+64"
-}
+    formats = [
 
-# START
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        f"{first}.{last}{number}",
+        f"{first}{number}",
+        f"{last}{number}",
+        f"{first}_{last}",
+        f"{first}{last}",
+    ]
 
-    mensaje = """
-╔══════════════════════╗
-      🦊 FOX REVOLUTION
-╚══════════════════════╝
+    username = random.choice(formats).lower()
 
-🔥 Generador Premium
-de Direcciones Fake
+    username = (
+        username
+        .replace(" ", "")
+        .replace("á", "a")
+        .replace("é", "e")
+        .replace("í", "i")
+        .replace("ó", "o")
+        .replace("ú", "u")
+        .replace("ñ", "n")
+    )
 
-━━━━━━━━━━━━━━━━━━
+    domain = random.choice(EMAIL_DOMAINS)
 
-📌 COMANDOS
+    return f"{username}@{domain}"
 
-🌍 /address
-➜ Elegir país
+# =========================
+# GENERAR DIRECCION
+# =========================
 
-🎲 /random
-➜ Dirección aleatoria
-
-❓ /help
-➜ Ayuda
-
-━━━━━━━━━━━━━━━━━━
-
-⚡ Powered By Fox Revolution
-"""
-
-    await update.message.reply_text(mensaje)
-
-# HELP
-async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    texto = """
-📌 AYUDA DEL BOT
-
-🌍 /address
-➜ Elegir país y generar dirección
-
-🎲 /random
-➜ Generar dirección aleatoria
-
-❓ /help
-➜ Mostrar ayuda
-"""
-
-    await update.message.reply_text(texto)
-
-# GENERAR DIRECCIÓN
-def generar_direccion(locale_code):
+def generate_address(country_name, locale_code):
 
     fake = Faker(locale_code)
 
-    nombre = fake.name()
-    direccion = fake.street_address()
-    ciudad = fake.city()
-
-    try:
-        estado = fake.state()
-    except:
-        estado = "No disponible"
-
-    codigo = fake.postcode()
-
-    codigo_pais = PHONE_CODES.get(locale_code, "+1")
-
-    telefono = fake.msisdn()[:9]
-
-    telefono = (
-        f"{codigo_pais} "
-        f"{telefono[:3]}-"
-        f"{telefono[3:6]}-"
-        f"{telefono[6:]}"
+    # UBICACION REAL
+    location = random.choice(
+        REAL_LOCATIONS[country_name]
     )
 
+    city = location["city"]
+    state = location["state"]
+    postal = location["postal"]
+
+    # NOMBRE
+    first_name = fake.first_name()
+    last_name = fake.last_name()
+
+    full_name = f"{first_name} {last_name}"
+
+    # CALLE
+    street = fake.street_address()
+
+    # TELEFONO
+    phone = fake.phone_number()
+
+    # EMAIL
+    email = generate_email(
+        first_name,
+        last_name
+    )
+
+    # TEXTO FINAL
     return f"""
-👤 Nombre:
-{nombre}
+🦊 <b>FOX REVOLUTION</b>
 
-🏠 Dirección:
-{direccion}
+{country_name}
 
-🏙 Ciudad:
-{ciudad}
+👤 <b>Nombre:</b>
+<code>{full_name}</code>
 
-📍 Estado:
-{estado}
+🏠 <b>Dirección:</b>
+<code>{street}</code>
 
-📮 Código Postal:
-{codigo}
+🏙 <b>Ciudad:</b>
+<code>{city}</code>
 
-📞 Teléfono:
-{telefono}
+🗺 <b>Estado:</b>
+<code>{state}</code>
+
+📮 <b>Código Postal:</b>
+<code>{postal}</code>
+
+📞 <b>Teléfono:</b>
+<code>{phone}</code>
+
+📧 <b>Correo:</b>
+<code>{email}</code>
 """
 
-# ADDRESS
-async def address(update: Update, context: ContextTypes.DEFAULT_TYPE):
+# =========================
+# START
+# =========================
 
-    botones = []
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    fila = []
+    keyboard = []
 
-    for country_key, country_name in COUNTRIES.items():
+    row = []
 
-        fila.append(
+    for i, country in enumerate(
+        COUNTRIES.keys(),
+        start=1
+    ):
+
+        row.append(
             InlineKeyboardButton(
-                country_name,
-                callback_data=country_key
+                country,
+                callback_data=country
             )
         )
 
-        if len(fila) == 3:
-            botones.append(fila)
-            fila = []
+        if len(row) == 2:
+            keyboard.append(row)
+            row = []
 
-    if fila:
-        botones.append(fila)
+    if row:
+        keyboard.append(row)
 
-    reply_markup = InlineKeyboardMarkup(botones)
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    text = """
+🦊 <b>FOX REVOLUTION BOT</b>
+
+🌍 Generador Premium
+
+Selecciona un país:
+"""
 
     await update.message.reply_text(
-        "🌍 ELIGE UN PAÍS",
+        text,
+        parse_mode="HTML",
         reply_markup=reply_markup
     )
 
+# =========================
 # BOTONES
+# =========================
+
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
 
     await query.answer()
 
-    country_key = query.data
+    country_name = query.data
 
-    locale_code = LOCALES[country_key]
+    locale_code = COUNTRIES[country_name]
 
-    country_name = COUNTRIES[country_key]
+    text = generate_address(
+        country_name,
+        locale_code
+    )
 
-    direccion = generar_direccion(locale_code)
+    keyboard = [
 
-    botones = [
         [
             InlineKeyboardButton(
                 "🔄 Nueva Dirección",
-                callback_data=country_key
+                callback_data=country_name
             )
         ]
     ]
 
-    reply_markup = InlineKeyboardMarkup(botones)
+    reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await query.edit_message_text(
-        f"""
-🦊 FOX REVOLUTION
-
-{country_name}
-
-{direccion}
-""",
+    await query.message.reply_text(
+        text,
+        parse_mode="HTML",
         reply_markup=reply_markup
     )
 
-# RANDOM
-async def random_address(update: Update, context: ContextTypes.DEFAULT_TYPE):
+# =========================
+# HELP
+# =========================
 
-    import random
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    country_key = random.choice(list(COUNTRIES.keys()))
+    text = """
+❓ <b>AYUDA</b>
 
-    locale_code = LOCALES[country_key]
+Usa /start para comenzar.
 
-    country_name = COUNTRIES[country_key]
+✅ Ciudades reales
+✅ Estados reales
+✅ Códigos postales reales
+✅ Correos similares al nombre
+✅ Datos coherentes por país
 
-    direccion = generar_direccion(locale_code)
+⚡ Powered By Fox Revolution
+"""
 
     await update.message.reply_text(
-        f"""
-🎲 DIRECCIÓN ALEATORIA
-
-{country_name}
-
-{direccion}
-"""
+        text,
+        parse_mode="HTML"
     )
 
+# =========================
 # MAIN
+# =========================
+
 def main():
 
     app = Application.builder().token(TOKEN).build()
 
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("help", help_command))
-    app.add_handler(CommandHandler("address", address))
-    app.add_handler(CommandHandler("random", random_address))
-    app.add_handler(CallbackQueryHandler(button))
+    app.add_handler(
+        CommandHandler("start", start)
+    )
+
+    app.add_handler(
+        CommandHandler("help", help_command)
+    )
+
+    app.add_handler(
+        CallbackQueryHandler(button)
+    )
 
     print("🦊 FOX REVOLUTION BOT INICIADO")
 
     app.run_polling()
+
+# =========================
+# RUN
+# =========================
 
 if __name__ == "__main__":
     main()
