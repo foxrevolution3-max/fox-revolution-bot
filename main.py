@@ -16,308 +16,256 @@ from telegram.ext import (
     ContextTypes,
 )
 
-# =========================
+# =====================================
 # TOKEN
-# =========================
+# =====================================
 
 TOKEN = "8702989629:AAGHgafvmYRUA_hfI-jrSWYdZ0uFcIALdQc"
 
-# =========================
+# =====================================
 # LOGS
-# =========================
+# =====================================
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO
 )
 
-# =========================
-# PAISES + LOCALES
-# =========================
+# =====================================
+# FAKER
+# =====================================
 
-COUNTRIES = {
+fake = Faker("en_US")
 
-    "🇺🇸 USA": "en_US",
-    "🇲🇽 México": "es_MX",
-    "🇦🇷 Argentina": "es_AR",
-    "🇧🇷 Brasil": "pt_BR",
-    "🇨🇦 Canadá": "en_CA",
-    "🇪🇸 España": "es_ES",
+# =====================================
+# ESTADOS USA
+# =====================================
+
+USA_STATES = {
+
+    "California": [
+        ("Los Angeles", "90001"),
+        ("San Diego", "92101"),
+        ("San Francisco", "94101"),
+    ],
+
+    "Texas": [
+        ("Houston", "77001"),
+        ("Dallas", "75201"),
+        ("Austin", "73301"),
+    ],
+
+    "Florida": [
+        ("Miami", "33101"),
+        ("Orlando", "32801"),
+        ("Tampa", "33601"),
+    ],
+
+    "New York": [
+        ("New York City", "10001"),
+        ("Buffalo", "14201"),
+        ("Albany", "12201"),
+    ],
+
+    "Illinois": [
+        ("Chicago", "60601"),
+        ("Aurora", "60502"),
+        ("Naperville", "60540"),
+    ],
+
+    "Arizona": [
+        ("Phoenix", "85001"),
+        ("Tucson", "85701"),
+        ("Mesa", "85201"),
+    ],
+
+    "Nevada": [
+        ("Las Vegas", "88901"),
+        ("Reno", "89501"),
+        ("Henderson", "89002"),
+    ],
+
+    "Georgia": [
+        ("Atlanta", "30301"),
+        ("Savannah", "31401"),
+        ("Augusta", "30901"),
+    ],
+
+    "Washington": [
+        ("Seattle", "98101"),
+        ("Tacoma", "98401"),
+        ("Spokane", "99201"),
+    ],
+
+    "Colorado": [
+        ("Denver", "80201"),
+        ("Aurora", "80010"),
+        ("Boulder", "80301"),
+    ],
+
+    "Ohio": [
+        ("Columbus", "43004"),
+        ("Cleveland", "44101"),
+        ("Cincinnati", "45201"),
+    ],
+
+    "North Carolina": [
+        ("Charlotte", "28201"),
+        ("Raleigh", "27601"),
+        ("Durham", "27701"),
+    ],
+
+    "Virginia": [
+        ("Virginia Beach", "23450"),
+        ("Richmond", "23173"),
+        ("Norfolk", "23501"),
+    ],
+
+    "Pennsylvania": [
+        ("Philadelphia", "19019"),
+        ("Pittsburgh", "15201"),
+        ("Allentown", "18101"),
+    ],
+
+    "Michigan": [
+        ("Detroit", "48201"),
+        ("Grand Rapids", "49501"),
+        ("Lansing", "48901"),
+    ],
+
+    "New Jersey": [
+        ("Newark", "07101"),
+        ("Jersey City", "07302"),
+        ("Paterson", "07501"),
+    ],
+
+    "Massachusetts": [
+        ("Boston", "02108"),
+        ("Cambridge", "02138"),
+        ("Salem", "01970"),
+    ],
+
+    "Tennessee": [
+        ("Nashville", "37201"),
+        ("Memphis", "37501"),
+        ("Knoxville", "37901"),
+    ],
+
+    "Indiana": [
+        ("Indianapolis", "46201"),
+        ("Fort Wayne", "46801"),
+        ("Evansville", "47701"),
+    ],
+
+    "Missouri": [
+        ("Kansas City", "64101"),
+        ("St. Louis", "63101"),
+        ("Springfield", "65801"),
+    ],
 }
 
-# =========================
-# CIUDADES REALES
-# =========================
-
-REAL_LOCATIONS = {
-
-    "🇺🇸 USA": [
-
-        {
-            "city": "New York",
-            "state": "New York",
-            "postal": "10001"
-        },
-
-        {
-            "city": "Los Angeles",
-            "state": "California",
-            "postal": "90001"
-        },
-
-        {
-            "city": "Chicago",
-            "state": "Illinois",
-            "postal": "60601"
-        },
-    ],
-
-    "🇲🇽 México": [
-
-        {
-            "city": "Ciudad de México",
-            "state": "CDMX",
-            "postal": "01000"
-        },
-
-        {
-            "city": "Guadalajara",
-            "state": "Jalisco",
-            "postal": "44100"
-        },
-
-        {
-            "city": "Monterrey",
-            "state": "Nuevo León",
-            "postal": "64000"
-        },
-    ],
-
-    "🇦🇷 Argentina": [
-
-        {
-            "city": "Buenos Aires",
-            "state": "Buenos Aires",
-            "postal": "1000"
-        },
-
-        {
-            "city": "Córdoba",
-            "state": "Córdoba",
-            "postal": "5000"
-        },
-
-        {
-            "city": "Rosario",
-            "state": "Santa Fe",
-            "postal": "2000"
-        },
-    ],
-
-    "🇧🇷 Brasil": [
-
-        {
-            "city": "São Paulo",
-            "state": "São Paulo",
-            "postal": "01000-000"
-        },
-
-        {
-            "city": "Rio de Janeiro",
-            "state": "Rio de Janeiro",
-            "postal": "20000-000"
-        },
-
-        {
-            "city": "Brasília",
-            "state": "Distrito Federal",
-            "postal": "70000-000"
-        },
-    ],
-
-    "🇨🇦 Canadá": [
-
-        {
-            "city": "Toronto",
-            "state": "Ontario",
-            "postal": "M5V 3L9"
-        },
-
-        {
-            "city": "Vancouver",
-            "state": "British Columbia",
-            "postal": "V5K 0A1"
-        },
-
-        {
-            "city": "Montreal",
-            "state": "Quebec",
-            "postal": "H1A 0A1"
-        },
-    ],
-
-    "🇪🇸 España": [
-
-        {
-            "city": "Madrid",
-            "state": "Madrid",
-            "postal": "28001"
-        },
-
-        {
-            "city": "Barcelona",
-            "state": "Cataluña",
-            "postal": "08001"
-        },
-
-        {
-            "city": "Valencia",
-            "state": "Valencia",
-            "postal": "46001"
-        },
-    ]
-}
-
-# =========================
-# DOMINIOS EMAIL
-# =========================
+# =====================================
+# EMAILS
+# =====================================
 
 EMAIL_DOMAINS = [
-
     "gmail.com",
     "hotmail.com",
     "outlook.com",
     "yahoo.com",
 ]
 
-# =========================
+# =====================================
 # GENERAR EMAIL
-# =========================
+# =====================================
 
 def generate_email(first, last):
 
     number = random.randint(10, 999)
 
-    formats = [
-
-        f"{first}.{last}{number}",
+    username = random.choice([
+        f"{first}{last}",
+        f"{first}.{last}",
+        f"{first}_{last}",
         f"{first}{number}",
         f"{last}{number}",
-        f"{first}_{last}",
-        f"{first}{last}",
-    ]
-
-    username = random.choice(formats).lower()
-
-    username = (
-        username
-        .replace(" ", "")
-        .replace("á", "a")
-        .replace("é", "e")
-        .replace("í", "i")
-        .replace("ó", "o")
-        .replace("ú", "u")
-        .replace("ñ", "n")
-    )
+    ]).lower()
 
     domain = random.choice(EMAIL_DOMAINS)
 
     return f"{username}@{domain}"
 
-# =========================
+# =====================================
 # GENERAR DIRECCION
-# =========================
+# =====================================
 
-def generate_address(country_name, locale_code):
+def generate_address(state):
 
-    fake = Faker(locale_code)
-
-    location = random.choice(
-        REAL_LOCATIONS[country_name]
+    city, postal = random.choice(
+        USA_STATES[state]
     )
 
-    city = location["city"]
-    state = location["state"]
-    postal = location["postal"]
+    first = fake.first_name()
+    last = fake.last_name()
 
-    first_name = fake.first_name()
-    last_name = fake.last_name()
-
-    full_name = f"{first_name} {last_name}"
+    fullname = f"{first} {last}"
 
     street = fake.street_address()
 
     phone = fake.phone_number()
 
-    email = generate_email(
-        first_name,
-        last_name
-    )
+    email = generate_email(first, last)
 
     return f"""
 🦊 <b>FOX REVOLUTION</b>
 
-{country_name}
+🇺🇸 USA
 
-👤 <b>Nombre:</b>
-<code>{full_name}</code>
+👤 <b>Name:</b>
+<code>{fullname}</code>
 
-🏠 <b>Dirección:</b>
+🏠 <b>Address:</b>
 <code>{street}</code>
 
-🏙 <b>Ciudad:</b>
+🏙 <b>City:</b>
 <code>{city}</code>
 
-🗺 <b>Estado:</b>
+🗺 <b>State:</b>
 <code>{state}</code>
 
-📮 <b>Código Postal:</b>
+📮 <b>ZIP Code:</b>
 <code>{postal}</code>
 
-📞 <b>Teléfono:</b>
+📞 <b>Phone:</b>
 <code>{phone}</code>
 
-📧 <b>Correo:</b>
+📧 <b>Email:</b>
 <code>{email}</code>
 """
 
-# =========================
+# =====================================
 # START
-# =========================
+# =====================================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    keyboard = []
-
-    row = []
-
-    for i, country in enumerate(
-        COUNTRIES.keys(),
-        start=1
-    ):
-
-        row.append(
+    keyboard = [
+        [
             InlineKeyboardButton(
-                country,
-                callback_data=country
+                "🇺🇸 United States",
+                callback_data="usa"
             )
-        )
-
-        if len(row) == 2:
-            keyboard.append(row)
-            row = []
-
-    if row:
-        keyboard.append(row)
+        ]
+    ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     text = """
 🦊 <b>FOX REVOLUTION BOT</b>
 
-🌍 Generador Premium
+🌍 USA Address Generator
 
-Selecciona un país:
+Select country:
 """
 
     await update.message.reply_text(
@@ -326,9 +274,9 @@ Selecciona un país:
         reply_markup=reply_markup
     )
 
-# =========================
+# =====================================
 # BOTONES
-# =========================
+# =====================================
 
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
@@ -336,21 +284,56 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.answer()
 
-    country_name = query.data
+    data = query.data
 
-    locale_code = COUNTRIES[country_name]
+    # MOSTRAR ESTADOS
+    if data == "usa":
 
-    text = generate_address(
-        country_name,
-        locale_code
-    )
+        keyboard = []
+
+        row = []
+
+        for i, state in enumerate(
+            USA_STATES.keys(),
+            start=1
+        ):
+
+            row.append(
+                InlineKeyboardButton(
+                    state,
+                    callback_data=state
+                )
+            )
+
+            # 🔥 3 BOTONES POR FILA
+            if len(row) == 3:
+
+                keyboard.append(row)
+
+                row = []
+
+        if row:
+            keyboard.append(row)
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+
+        await query.message.reply_text(
+            "🇺🇸 Select a state:",
+            reply_markup=reply_markup
+        )
+
+        return
+
+    # GENERAR DIRECCION
+    state = data
+
+    text = generate_address(state)
 
     keyboard = [
-
         [
             InlineKeyboardButton(
-                "🔄 Nueva Dirección",
-                callback_data=country_name
+                "🔄 Generate New",
+                callback_data=state
             )
         ]
     ]
@@ -363,24 +346,23 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=reply_markup
     )
 
-# =========================
+# =====================================
 # HELP
-# =========================
+# =====================================
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     text = """
-❓ <b>AYUDA</b>
+🦊 <b>FOX REVOLUTION BOT</b>
 
-Usa /start para comenzar.
+Use /start to begin.
 
-✅ Ciudades reales
-✅ Estados reales
-✅ Códigos postales reales
-✅ Correos similares al nombre
-✅ Datos coherentes por país
-
-⚡ Powered By Fox Revolution
+✅ Real USA states
+✅ Real cities
+✅ Real ZIP codes
+✅ Realistic emails
+✅ Random phones
+✅ Premium generator
 """
 
     await update.message.reply_text(
@@ -388,9 +370,9 @@ Usa /start para comenzar.
         parse_mode="HTML"
     )
 
-# =========================
+# =====================================
 # MAIN
-# =========================
+# =====================================
 
 def main():
 
@@ -408,13 +390,13 @@ def main():
         CallbackQueryHandler(button)
     )
 
-    print("🦊 FOX REVOLUTION BOT INICIADO")
+    print("🦊 FOX REVOLUTION BOT STARTED")
 
     app.run_polling()
 
-# =========================
+# =====================================
 # RUN
-# =========================
+# =====================================
 
 if __name__ == "__main__":
     main()
