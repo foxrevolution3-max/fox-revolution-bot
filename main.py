@@ -16,306 +16,237 @@ from telegram.ext import (
     ContextTypes,
 )
 
-# ==========================================
+# ==================================================
 # TOKEN
-# ==========================================
+# ==================================================
 
 TOKEN = "8702989629:AAGHgafvmYRUA_hfI-jrSWYdZ0uFcIALdQc"
 
-# ==========================================
+# ==================================================
 # LOGS
-# ==========================================
+# ==================================================
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO
 )
 
-# ==========================================
+# ==================================================
 # ESTADOS USA
-# ==========================================
+# ==================================================
 
 USA_STATES = [
 
-    "California",
-    "Texas",
-    "Florida",
-    "New York",
-    "Illinois",
-    "New Jersey",
-    "Nevada",
-    "Arizona",
-    "Georgia",
-    "Washington",
+    "Alabama", "Alaska", "Arizona", "Arkansas",
+    "California", "Colorado", "Connecticut",
+    "Delaware", "Florida", "Georgia", "Hawaii",
+    "Idaho", "Illinois", "Indiana", "Iowa",
+    "Kansas", "Kentucky", "Louisiana", "Maine",
+    "Maryland", "Massachusetts", "Michigan",
+    "Minnesota", "Mississippi", "Missouri",
+    "Montana", "Nebraska", "Nevada",
+    "New Hampshire", "New Jersey", "New Mexico",
+    "New York", "North Carolina", "North Dakota",
+    "Ohio", "Oklahoma", "Oregon",
+    "Pennsylvania", "Rhode Island",
+    "South Carolina", "South Dakota",
+    "Tennessee", "Texas", "Utah",
+    "Vermont", "Virginia", "Washington",
+    "West Virginia", "Wisconsin", "Wyoming"
+
 ]
 
-# ==========================================
+# ==================================================
 # DATOS REALES
-# ==========================================
+# ==================================================
 
-STATE_DATA = {
+REAL_DATA = {
 
-    "California": [
+    "California": {
+        "cities": [
+            ("Los Angeles", "90001", "213"),
+            ("San Diego", "92101", "619"),
+            ("San Francisco", "94102", "415"),
+        ]
+    },
 
-        {
-            "city": "Los Angeles",
-            "zip": "90001",
-            "area": "213"
-        },
+    "Texas": {
+        "cities": [
+            ("Houston", "77001", "713"),
+            ("Dallas", "75201", "214"),
+            ("Austin", "73301", "512"),
+        ]
+    },
 
-        {
-            "city": "San Diego",
-            "zip": "92101",
-            "area": "619"
-        },
+    "Florida": {
+        "cities": [
+            ("Miami", "33101", "305"),
+            ("Orlando", "32801", "407"),
+            ("Tampa", "33601", "813"),
+        ]
+    },
 
-        {
-            "city": "San Francisco",
-            "zip": "94102",
-            "area": "415"
-        },
-    ],
+    "New York": {
+        "cities": [
+            ("New York City", "10001", "212"),
+            ("Buffalo", "14201", "716"),
+            ("Rochester", "14602", "585"),
+        ]
+    },
 
-    "Texas": [
+    "Illinois": {
+        "cities": [
+            ("Chicago", "60601", "312"),
+            ("Aurora", "60502", "331"),
+            ("Naperville", "60540", "630"),
+        ]
+    },
 
-        {
-            "city": "Houston",
-            "zip": "77001",
-            "area": "281"
-        },
+    "Nevada": {
+        "cities": [
+            ("Las Vegas", "88901", "702"),
+            ("Reno", "89501", "775"),
+        ]
+    },
 
-        {
-            "city": "Dallas",
-            "zip": "75201",
-            "area": "214"
-        },
+    "Arizona": {
+        "cities": [
+            ("Phoenix", "85001", "602"),
+            ("Tucson", "85701", "520"),
+        ]
+    },
 
-        {
-            "city": "Austin",
-            "zip": "73301",
-            "area": "512"
-        },
-    ],
+    "Georgia": {
+        "cities": [
+            ("Atlanta", "30301", "404"),
+            ("Savannah", "31401", "912"),
+        ]
+    },
 
-    "Florida": [
+    "Washington": {
+        "cities": [
+            ("Seattle", "98101", "206"),
+            ("Spokane", "99201", "509"),
+        ]
+    },
 
-        {
-            "city": "Miami",
-            "zip": "33101",
-            "area": "305"
-        },
+    "New Jersey": {
+        "cities": [
+            ("Newark", "07101", "973"),
+            ("Jersey City", "07302", "201"),
+        ]
+    },
 
-        {
-            "city": "Orlando",
-            "zip": "32801",
-            "area": "407"
-        },
+    "Pennsylvania": {
+        "cities": [
+            ("Philadelphia", "19019", "215"),
+            ("Pittsburgh", "15201", "412"),
+        ]
+    },
 
-        {
-            "city": "Tampa",
-            "zip": "33601",
-            "area": "813"
-        },
-    ],
+    "Michigan": {
+        "cities": [
+            ("Detroit", "48201", "313"),
+            ("Grand Rapids", "49503", "616"),
+        ]
+    },
 
-    "New York": [
+    "Massachusetts": {
+        "cities": [
+            ("Boston", "02108", "617"),
+            ("Cambridge", "02138", "857"),
+        ]
+    },
 
-        {
-            "city": "Buffalo",
-            "zip": "14201",
-            "area": "716"
-        },
+    "Tennessee": {
+        "cities": [
+            ("Nashville", "37201", "615"),
+            ("Memphis", "37501", "901"),
+        ]
+    },
 
-        {
-            "city": "New York City",
-            "zip": "10001",
-            "area": "212"
-        },
+    "Indiana": {
+        "cities": [
+            ("Indianapolis", "46201", "317"),
+            ("Fort Wayne", "46802", "260"),
+        ]
+    },
 
-        {
-            "city": "Rochester",
-            "zip": "14602",
-            "area": "585"
-        },
-    ],
-
-    "Illinois": [
-
-        {
-            "city": "Chicago",
-            "zip": "60601",
-            "area": "312"
-        },
-
-        {
-            "city": "Aurora",
-            "zip": "60502",
-            "area": "630"
-        },
-
-        {
-            "city": "Naperville",
-            "zip": "60540",
-            "area": "331"
-        },
-    ],
-
-    "New Jersey": [
-
-        {
-            "city": "Newark",
-            "zip": "07102",
-            "area": "973"
-        },
-
-        {
-            "city": "Jersey City",
-            "zip": "07302",
-            "area": "201"
-        },
-
-        {
-            "city": "Paterson",
-            "zip": "07501",
-            "area": "862"
-        },
-    ],
-
-    "Nevada": [
-
-        {
-            "city": "Las Vegas",
-            "zip": "88901",
-            "area": "702"
-        },
-
-        {
-            "city": "Reno",
-            "zip": "89501",
-            "area": "775"
-        },
-    ],
-
-    "Arizona": [
-
-        {
-            "city": "Phoenix",
-            "zip": "85001",
-            "area": "602"
-        },
-
-        {
-            "city": "Tucson",
-            "zip": "85701",
-            "area": "520"
-        },
-    ],
-
-    "Georgia": [
-
-        {
-            "city": "Atlanta",
-            "zip": "30301",
-            "area": "404"
-        },
-
-        {
-            "city": "Savannah",
-            "zip": "31401",
-            "area": "912"
-        },
-    ],
-
-    "Washington": [
-
-        {
-            "city": "Seattle",
-            "zip": "98101",
-            "area": "206"
-        },
-
-        {
-            "city": "Spokane",
-            "zip": "99201",
-            "area": "509"
-        },
-    ],
+    "Missouri": {
+        "cities": [
+            ("Kansas City", "64101", "816"),
+            ("St. Louis", "63101", "314"),
+        ]
+    },
 }
 
-# ==========================================
+# ==================================================
 # EMAILS
-# ==========================================
+# ==================================================
 
 EMAIL_DOMAINS = [
-
     "gmail.com",
     "hotmail.com",
     "outlook.com",
-    "yahoo.com"
+    "yahoo.com",
 ]
 
-# ==========================================
-# GENERAR TELEFONO
-# ==========================================
-
-def generate_phone(area_code):
-
-    middle = random.randint(200, 999)
-
-    last = random.randint(1000, 9999)
-
-    return f"+1 ({area_code}) {middle}-{last}"
-
-# ==========================================
-# GENERAR EMAIL
-# ==========================================
+# ==================================================
+# EMAIL
+# ==================================================
 
 def generate_email(first, last):
 
     number = random.randint(10, 999)
 
     username = random.choice([
-
         f"{first}.{last}{number}",
-        f"{first}{number}",
-        f"{last}{number}",
         f"{first}_{last}",
         f"{first}{last}",
-    ])
-
-    username = username.lower()
+        f"{first}{number}",
+    ]).lower()
 
     domain = random.choice(EMAIL_DOMAINS)
 
     return f"{username}@{domain}"
 
-# ==========================================
+# ==================================================
+# TELEFONO
+# ==================================================
+
+def generate_phone(area):
+
+    part1 = random.randint(200, 999)
+    part2 = random.randint(1000, 9999)
+
+    return f"+1 ({area}) {part1}-{part2}"
+
+# ==================================================
 # GENERAR DIRECCION
-# ==========================================
+# ==================================================
 
 def generate_address(state):
 
     fake = Faker("en_US")
 
-    location = random.choice(
-        STATE_DATA[state]
-    )
+    if state not in REAL_DATA:
+        city = fake.city()
+        zip_code = fake.zipcode()
+        area = "000"
 
-    city = location["city"]
-
-    zip_code = location["zip"]
-
-    area_code = location["area"]
+    else:
+        city, zip_code, area = random.choice(
+            REAL_DATA[state]["cities"]
+        )
 
     first = fake.first_name()
-
     last = fake.last_name()
 
     full_name = f"{first} {last}"
 
     street = fake.street_address()
 
-    phone = generate_phone(area_code)
+    phone = generate_phone(area)
 
     email = generate_email(first, last)
 
@@ -325,35 +256,34 @@ def generate_address(state):
 🇺🇸 USA
 
 👤 <b>Nombre:</b>
-<code>{full_name}</code>
+{full_name}
 
 🏠 <b>Dirección:</b>
-<code>{street}</code>
+{street}
 
 🏙 <b>Ciudad:</b>
-<code>{city}</code>
+{city}
 
 🗺 <b>Estado:</b>
-<code>{state}</code>
+{state}
 
 📮 <b>Código Postal:</b>
-<code>{zip_code}</code>
+{zip_code}
 
 📞 <b>Teléfono:</b>
-<code>{phone}</code>
+{phone}
 
 📧 <b>Correo:</b>
-<code>{email}</code>
+{email}
 """
 
-# ==========================================
+# ==================================================
 # START
-# ==========================================
+# ==================================================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
-
         [
             InlineKeyboardButton(
                 "🇺🇸 Estados Unidos",
@@ -378,15 +308,11 @@ Selecciona un país:
         reply_markup=reply_markup
     )
 
-# ==========================================
+# ==================================================
 # MOSTRAR ESTADOS
-# ==========================================
+# ==================================================
 
-async def usa_states(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    query = update.callback_query
-
-    await query.answer()
+async def show_states(query):
 
     keyboard = []
 
@@ -395,7 +321,6 @@ async def usa_states(update: Update, context: ContextTypes.DEFAULT_TYPE):
     for state in USA_STATES:
 
         row.append(
-
             InlineKeyboardButton(
                 state,
                 callback_data=f"state_{state}"
@@ -403,78 +328,65 @@ async def usa_states(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         if len(row) == 3:
-
             keyboard.append(row)
-
             row = []
 
     if row:
-
         keyboard.append(row)
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     await query.message.reply_text(
-        "🇺🇸 Selecciona un estado:",
-        reply_markup=reply_markup
-    )
-
-# ==========================================
-# GENERAR
-# ==========================================
-
-async def generate(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    query = update.callback_query
-
-    await query.answer()
-
-    state = query.data.replace(
-        "state_",
-        ""
-    )
-
-    text = generate_address(state)
-
-    keyboard = [
-
-        [
-            InlineKeyboardButton(
-                "🔄 Generar Nuevo",
-                callback_data=f"state_{state}"
-            )
-        ]
-    ]
-
-    reply_markup = InlineKeyboardMarkup(keyboard)
-
-    await query.edit_message_text(
-        text=text,
+        "🇺🇸 <b>Selecciona un estado:</b>",
         parse_mode="HTML",
         reply_markup=reply_markup
     )
 
-# ==========================================
+# ==================================================
 # BOTONES
-# ==========================================
+# ==================================================
 
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
 
+    await query.answer()
+
     data = query.data
 
+    # ABRIR ESTADOS
     if data == "usa":
 
-        await usa_states(update, context)
+        await show_states(query)
+        return
 
-    elif data.startswith("state_"):
+    # GENERAR
+    if data.startswith("state_"):
 
-        await generate(update, context)
+        state = data.replace("state_", "")
 
-# ==========================================
+        text = generate_address(state)
+
+        keyboard = [
+            [
+                InlineKeyboardButton(
+                    "🔄 Generar Nuevo",
+                    callback_data=f"state_{state}"
+                )
+            ]
+        ]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+
+        await query.message.reply_text(
+            text,
+            parse_mode="HTML",
+            reply_markup=reply_markup
+        )
+
+# ==================================================
 # HELP
-# ==========================================
+# ==================================================
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
@@ -483,14 +395,14 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 Usa /start para comenzar.
 
-✅ Estados reales USA
+✅ Estados reales
 ✅ Ciudades reales
-✅ ZIP Codes reales
-✅ Códigos telefónicos reales
-✅ Correos realistas
-✅ Generador premium
+✅ ZIP reales
+✅ Área telefónica real
+✅ Correos coherentes
+✅ Generación premium USA
 
-⚡ Powered By Fox Revolution
+🦊 Powered By Fox Revolution
 """
 
     await update.message.reply_text(
@@ -498,9 +410,9 @@ Usa /start para comenzar.
         parse_mode="HTML"
     )
 
-# ==========================================
+# ==================================================
 # MAIN
-# ==========================================
+# ==================================================
 
 def main():
 
@@ -522,9 +434,9 @@ def main():
 
     app.run_polling()
 
-# ==========================================
+# ==================================================
 # RUN
-# ==========================================
+# ==================================================
 
 if __name__ == "__main__":
     main()
