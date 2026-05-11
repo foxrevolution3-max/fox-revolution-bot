@@ -20,7 +20,7 @@ from telegram.ext import (
 # TOKEN
 # =========================
 
-TOKEN = "TU_TOKEN_AQUI"
+TOKEN = "8702989629:AAHPCLUPQjaPDHGYAz-h57ibRr82OxIedM0"
 
 # =========================
 # LOGS
@@ -37,72 +37,6 @@ logging.basicConfig(
 
 REAL_USA_DATA = {
 
-    "California": {
-        "city": "Los Angeles",
-        "zip": "90001",
-        "area_codes": ["213"]
-    },
-
-    "Texas": {
-        "city": "Dallas",
-        "zip": "75201",
-        "area_codes": ["214"]
-    },
-
-    "Florida": {
-        "city": "Orlando",
-        "zip": "32801",
-        "area_codes": ["407"]
-    },
-
-    "New York": {
-        "city": "Rochester",
-        "zip": "14602",
-        "area_codes": ["585"]
-    },
-
-    "Illinois": {
-        "city": "Chicago",
-        "zip": "60601",
-        "area_codes": ["312"]
-    },
-
-    "Georgia": {
-        "city": "Atlanta",
-        "zip": "30301",
-        "area_codes": ["404"]
-    },
-
-    "Nevada": {
-        "city": "Las Vegas",
-        "zip": "88901",
-        "area_codes": ["702"]
-    },
-
-    "Washington": {
-        "city": "Seattle",
-        "zip": "98101",
-        "area_codes": ["206"]
-    },
-
-    "Arizona": {
-        "city": "Phoenix",
-        "zip": "85001",
-        "area_codes": ["602"]
-    },
-
-    "Utah": {
-        "city": "Salt Lake City",
-        "zip": "84101",
-        "area_codes": ["801"]
-    },
-
-    "West Virginia": {
-        "city": "Charleston",
-        "zip": "25301",
-        "area_codes": ["304"]
-    },
-
     "Alabama": {
         "city": "Birmingham",
         "zip": "35203",
@@ -115,10 +49,22 @@ REAL_USA_DATA = {
         "area_codes": ["907"]
     },
 
+    "Arizona": {
+        "city": "Phoenix",
+        "zip": "85001",
+        "area_codes": ["602"]
+    },
+
     "Arkansas": {
         "city": "Little Rock",
         "zip": "72201",
         "area_codes": ["501"]
+    },
+
+    "California": {
+        "city": "Los Angeles",
+        "zip": "90001",
+        "area_codes": ["213"]
     },
 
     "Colorado": {
@@ -139,6 +85,18 @@ REAL_USA_DATA = {
         "area_codes": ["302"]
     },
 
+    "Florida": {
+        "city": "Orlando",
+        "zip": "32801",
+        "area_codes": ["407"]
+    },
+
+    "Georgia": {
+        "city": "Atlanta",
+        "zip": "30301",
+        "area_codes": ["404"]
+    },
+
     "Hawaii": {
         "city": "Honolulu",
         "zip": "96801",
@@ -149,6 +107,12 @@ REAL_USA_DATA = {
         "city": "Boise",
         "zip": "83701",
         "area_codes": ["208"]
+    },
+
+    "Illinois": {
+        "city": "Chicago",
+        "zip": "60601",
+        "area_codes": ["312"]
     },
 
     "Indiana": {
@@ -235,6 +199,12 @@ REAL_USA_DATA = {
         "area_codes": ["402"]
     },
 
+    "Nevada": {
+        "city": "Las Vegas",
+        "zip": "88901",
+        "area_codes": ["702"]
+    },
+
     "New Hampshire": {
         "city": "Manchester",
         "zip": "03101",
@@ -251,6 +221,12 @@ REAL_USA_DATA = {
         "city": "Albuquerque",
         "zip": "87101",
         "area_codes": ["505"]
+    },
+
+    "New York": {
+        "city": "Rochester",
+        "zip": "14602",
+        "area_codes": ["585"]
     },
 
     "North Carolina": {
@@ -313,6 +289,18 @@ REAL_USA_DATA = {
         "area_codes": ["615"]
     },
 
+    "Texas": {
+        "city": "Dallas",
+        "zip": "75201",
+        "area_codes": ["214"]
+    },
+
+    "Utah": {
+        "city": "Salt Lake City",
+        "zip": "84101",
+        "area_codes": ["801"]
+    },
+
     "Vermont": {
         "city": "Burlington",
         "zip": "05401",
@@ -323,6 +311,18 @@ REAL_USA_DATA = {
         "city": "Virginia Beach",
         "zip": "23450",
         "area_codes": ["757"]
+    },
+
+    "Washington": {
+        "city": "Seattle",
+        "zip": "98101",
+        "area_codes": ["206"]
+    },
+
+    "West Virginia": {
+        "city": "Charleston",
+        "zip": "25301",
+        "area_codes": ["304"]
     },
 
     "Wisconsin": {
@@ -368,17 +368,6 @@ def generate_email(first, last):
 
     ]).lower()
 
-    username = (
-        username
-        .replace(" ", "")
-        .replace("á", "a")
-        .replace("é", "e")
-        .replace("í", "i")
-        .replace("ó", "o")
-        .replace("ú", "u")
-        .replace("ñ", "n")
-    )
-
     domain = random.choice(EMAIL_DOMAINS)
 
     return f"{username}@{domain}"
@@ -390,6 +379,7 @@ def generate_email(first, last):
 def generate_phone(area_code):
 
     middle = random.randint(200, 999)
+
     last = random.randint(1000, 9999)
 
     return f"+1 ({area_code}) {middle}-{last}"
@@ -405,10 +395,15 @@ def generate_address(state_name):
     data = REAL_USA_DATA[state_name]
 
     city = data["city"]
+
     zip_code = data["zip"]
-    area_code = random.choice(data["area_codes"])
+
+    area_code = random.choice(
+        data["area_codes"]
+    )
 
     first_name = fake.first_name()
+
     last_name = fake.last_name()
 
     full_name = f"{first_name} {last_name}"
@@ -459,25 +454,33 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     row = []
 
-    states = list(REAL_USA_DATA.keys())
+    states = list(
+        REAL_USA_DATA.keys()
+    )
 
-    for i, state in enumerate(states, start=1):
+    for state in states:
 
         row.append(
+
             InlineKeyboardButton(
                 state,
                 callback_data=state
             )
         )
 
+        # 3 BOTONES POR FILA
         if len(row) == 3:
+
             keyboard.append(row)
+
             row = []
 
     if row:
         keyboard.append(row)
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    reply_markup = InlineKeyboardMarkup(
+        keyboard
+    )
 
     text = """
 🦊 <b>FOX REVOLUTION BOT</b>
@@ -505,7 +508,9 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     state_name = query.data
 
-    text = generate_address(state_name)
+    text = generate_address(
+        state_name
+    )
 
     keyboard = [[
 
@@ -516,10 +521,13 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     ]]
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    reply_markup = InlineKeyboardMarkup(
+        keyboard
+    )
 
-    await query.message.reply_text(
-        text,
+    # MISMO RECUADRO
+    await query.edit_message_text(
+        text=text,
         parse_mode="HTML",
         reply_markup=reply_markup
     )
@@ -557,7 +565,9 @@ Usa /start para comenzar.
 
 def main():
 
-    app = Application.builder().token(TOKEN).build()
+    app = Application.builder().token(
+        TOKEN
+    ).build()
 
     app.add_handler(
         CommandHandler("start", start)
@@ -571,7 +581,9 @@ def main():
         CallbackQueryHandler(button)
     )
 
-    print("🦊 FOX REVOLUTION BOT INICIADO")
+    print(
+        "🦊 FOX REVOLUTION BOT INICIADO"
+    )
 
     app.run_polling()
 
