@@ -20,7 +20,7 @@ from telegram.ext import (
 # TOKEN
 # =========================
 
-TOKEN = "TU_TOKEN_AQUI"
+TOKEN = 8702989629:"AAGHgafvmYRUA_hfI-jrSWYdZ0uFcIALdQc"
 
 # =========================
 # LOGS
