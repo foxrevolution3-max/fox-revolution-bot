@@ -20,7 +20,7 @@ from telegram.ext import (
 # TOKEN
 # =========================
 
-TOKEN = 8702989629:"AAGHgafvmYRUA_hfI-jrSWYdZ0uFcIALdQc"
+TOKEN = "8702989629:AAGHgafvmYRUA_hfI-jrSWYdZ0uFcIALdQc"
 
 # =========================
 # LOGS
@@ -232,7 +232,6 @@ def generate_address(country_name, locale_code):
 
     fake = Faker(locale_code)
 
-    # UBICACION REAL
     location = random.choice(
         REAL_LOCATIONS[country_name]
     )
@@ -241,25 +240,20 @@ def generate_address(country_name, locale_code):
     state = location["state"]
     postal = location["postal"]
 
-    # NOMBRE
     first_name = fake.first_name()
     last_name = fake.last_name()
 
     full_name = f"{first_name} {last_name}"
 
-    # CALLE
     street = fake.street_address()
 
-    # TELEFONO
     phone = fake.phone_number()
 
-    # EMAIL
     email = generate_email(
         first_name,
         last_name
     )
 
-    # TEXTO FINAL
     return f"""
 🦊 <b>FOX REVOLUTION</b>
 
